@@ -67,10 +67,7 @@ export const ProxyImage = React.memo(function ProxyImage({
  
 function TweetEmbed({ tweetUrl }) {
   const iframeRef = useRef(null);
-  let tweetId = new URL(tweetUrl).pathname.split("/").pop()
-  if (tweetId?.indexOf("?") != -1){
-    tweetId = tweetId?.split('?')[0]
-  }
+  const tweetId = new URL(tweetUrl).pathname.split("/").pop()?.replace("?ref_src=twsrc%5Etfw","")
 
   useEffect(() => {
     // Create an iframe element
