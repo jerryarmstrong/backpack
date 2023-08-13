@@ -64,24 +64,32 @@ export const ProxyImage = React.memo(function ProxyImage({
   }
 
 
-  const [html, setHtml] = useState<any>();
-  imgProps.src && imgProps.src.includes("https://twitter.com") ? 
-  useEffect(() => {
-    let urlencoded = encodeURIComponent(imgProps.src as string);
-    fetch("https://publish.twitter.com/oembed?url=" + urlencoded + "&omit_script=true")
-      .then((res) => res.json())
-      .then((json) => {
-       
-        setHtml(htmlDecode(json.html));
+ 
+function TweetEmbed() {
+  const iframeRef = useRef(null);
+const tweetUrl = imgProps.src
+    // Create an iframe element
+    const iframe = document.createElement("iframe");
 
-      });
-  }, []) : null;
+    // Set the source of the iframe to the Twitter API embed URL with the tweet URL as a parameter
+    iframe.src = `https://platform.twitter.com/embed/Tweet.html?dnt=true&embedId=twitter-widget-0&features=eyJ0ZndfZXhwZXJpbWVudHNfY29va2llX2V4cGlyYXRpb24iOnsiYnVja2V0IjoxMjA5NjAwLCJ2ZXJzaW9uIjpudWxsfSwidGZ3X2hvcml6b25fdHdlZXRfZW1iZWRfOTU1NSI6eyJidWNrZXQiOiJodGUiLCJ2ZXJzaW9uIjpudWxsfSwidGZ3X3R3ZWV0X2VtYmVkX2NsaWNrYWJpbGl0eV8xMjEwMiI6eyJidWNrZXQiOiJjb250cm9sLXRyYW5zZmVyLWFuYWx5dGljcyIsInNob3dfYXJlMiOiJjb250cm9sIiwic291cmNlcyI6WyJ0ZXJtcyJdfX0%3D&frame=false&hideCard=false&hideThread=false&id=${tweetUrl}`;
+
+    // Set the width and height of the iframe
+    iframe.width = "500";
+    iframe.height = "300";
+
+    // Append the iframe to the DOM
+    // @ts-ignore
+    iframeRef.current.appendChild(iframe);
+
+  return <div ref={iframeRef}></div>;
+}
   return (
     
     <>
       <div>
-      {html ? (
-        <div dangerouslySetInnerHTML={{ __html: html.outerHTML }} />
+      {imgProps.src && imgProps.src.includes("twitter.com") ? (
+        <TweetEmbed />
       ) : null}
       
        
