@@ -89,7 +89,7 @@ export const ProxyImage = React.memo(function ProxyImage({
     
     <>
       <div>
-      <div dangerouslySetInnerHTML={{ __html: (html ) }} />
+      {html}
 
        
       {imgProps.src && !noSkeleton ? (
@@ -162,6 +162,7 @@ export const ProxyImage = React.memo(function ProxyImage({
     </>
   );
 });
+
 
 
 
