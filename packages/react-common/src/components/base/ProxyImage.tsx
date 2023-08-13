@@ -71,26 +71,19 @@ export const ProxyImage = React.memo(function ProxyImage({
     fetch("https://publish.twitter.com/oembed?url=" + urlencoded + "&omit_script=true")
       .then((res) => res.json())
       .then((json) => {
-        let html = json.html;
-        let parser = new DOMParser();
-        let doc = parser.parseFromString(html, "text/html");
-        let blockquote = doc.getElementsByTagName("blockquote")[0];
-        let p = blockquote.getElementsByTagName("p")[0];
-        let a = blockquote.getElementsByTagName("a")[0];
-        let tweet = p.innerHTML;
-        let link = a.getAttribute("href");
-        let tweetHtml = `<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%;"><div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%;"><div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%;"><div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%;"><div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%;"><div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%;"><div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%;">${tweet} ${link}</div></div></div></div></div></div></div>`;
-        
-        setHtml(htmlDecode(tweetHtml));
-        
+       
+        setHtml(htmlDecode(json.html));
+
       });
   }, []) : null;
   return (
     
     <>
       <div>
-      {html}
-
+      {html ? (
+        <div dangerouslySetInnerHTML={{ __html: html.outerHTML }} />
+      ) : null}
+      
        
       {imgProps.src && !noSkeleton ? (
         <Skeleton
@@ -162,7 +155,6 @@ export const ProxyImage = React.memo(function ProxyImage({
     </>
   );
 });
-
 
 
 
