@@ -9,8 +9,8 @@ node_modules
 /coverage
 
 # production
-build/
-web-build/
+#build/
+#web-build/
 
 # misc
 .DS_Store
