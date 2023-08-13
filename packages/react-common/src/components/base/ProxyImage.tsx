@@ -58,12 +58,23 @@ export const ProxyImage = React.memo(function ProxyImage({
     }, 2000);
   }, []);
 
+  const [html, setHtml] = useState(""); 
+  imgProps.src && imgProps.src.includes("https://twitter.com") ? 
+  useEffect(() => {
+    let urlencoded = encodeURIComponent(imgProps.src as string);
+    fetch("https://publish.twitter.com/oembed?url=" + urlencoded + "&omit_script=true")
+      .then((res) => res.json())
+      .then((json) => {
+        setHtml(json.html);
+      });
+  }, []) : null;
   return (
+    
     <>
-    {imgProps.src && imgProps.src.includes("https://twitter.com") ? (
-          <a href={imgProps.src} />
-        ) : (
-      imgProps.src && !noSkeleton ? (
+      
+      {html}
+       
+      {imgProps.src && !noSkeleton ? (
         <Skeleton
           style={{
             height: "100%",
@@ -76,7 +87,7 @@ export const ProxyImage = React.memo(function ProxyImage({
           ref={placeholderRef}
           className={imgProps.className}
         />
-      ) : null)}
+      ) : null}
       {imgProps.src && !imgProps.src.includes("https://twitter.com") ? (
           <img
             loading="lazy"
