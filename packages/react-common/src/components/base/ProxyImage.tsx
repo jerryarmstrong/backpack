@@ -59,7 +59,7 @@ export const ProxyImage = React.memo(function ProxyImage({
   }, []);
   function htmlDecode(input){
     var doc = new DOMParser().parseFromString(input, "text/html");
-    return doc.documentElement.textContent;
+    return doc.documentElement;
 
   }
 
