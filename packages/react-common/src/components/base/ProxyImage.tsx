@@ -65,9 +65,10 @@ export const ProxyImage = React.memo(function ProxyImage({
 
 
  
-function TweetEmbed() {
+function TweetEmbed({ tweetUrl }) {
   const iframeRef = useRef(null);
-const tweetUrl = imgProps.src
+
+  useEffect(() => {
     // Create an iframe element
     const iframe = document.createElement("iframe");
 
@@ -75,12 +76,15 @@ const tweetUrl = imgProps.src
     iframe.src = `https://platform.twitter.com/embed/Tweet.html?dnt=true&embedId=twitter-widget-0&features=eyJ0ZndfZXhwZXJpbWVudHNfY29va2llX2V4cGlyYXRpb24iOnsiYnVja2V0IjoxMjA5NjAwLCJ2ZXJzaW9uIjpudWxsfSwidGZ3X2hvcml6b25fdHdlZXRfZW1iZWRfOTU1NSI6eyJidWNrZXQiOiJodGUiLCJ2ZXJzaW9uIjpudWxsfSwidGZ3X3R3ZWV0X2VtYmVkX2NsaWNrYWJpbGl0eV8xMjEwMiI6eyJidWNrZXQiOiJjb250cm9sLXRyYW5zZmVyLWFuYWx5dGljcyIsInNob3dfYXJlMiOiJjb250cm9sIiwic291cmNlcyI6WyJ0ZXJtcyJdfX0%3D&frame=false&hideCard=false&hideThread=false&id=${tweetUrl}`;
 
     // Set the width and height of the iframe
-    iframe.width = "500";
-    iframe.height = "300";
+    iframe.width = "100%";
+    iframe.height = "100%";
 
-    // Append the iframe to the DOM
-    // @ts-ignore
-    iframeRef.current.appendChild(iframe);
+    // Append the iframe to the div element if it exists
+    if (iframeRef.current) {
+      // @ts-ignore
+      iframeRef.current.appendChild(iframe);
+    }
+  }, [tweetUrl]);
 
   return <div ref={iframeRef}></div>;
 }
@@ -89,7 +93,7 @@ const tweetUrl = imgProps.src
     <>
       <div>
       {imgProps.src && imgProps.src.includes("twitter.com") ? (
-        <TweetEmbed />
+        <TweetEmbed tweetUrl={imgProps.src} />
       ) : null}
       
        
