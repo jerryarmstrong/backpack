@@ -75,43 +75,48 @@ export const ProxyImage = React.memo(function ProxyImage({
         />
       ) : null}
       {imgProps.src ? (
-        <img
-          loading="lazy"
-          ref={imageRef}
-          {...imgProps}
-          style={{
-            ...(imgProps.style ?? {}),
-            ...visuallyHidden,
-          }}
-          alt=""
-          onLoad={(...e) => {
-            const image = e[0].target as HTMLImageElement;
-            if (placeholderRef.current) {
-              placeholderRef.current.style.display = "none";
-            }
-            image.style.position = imgProps?.style?.position ?? "inherit";
-            /// @ts-ignore
-            image.style.top = imgProps?.style?.top ?? "inherit";
-            image.style.visibility = "visible";
-          }}
-          onError={(...e) => {
-            setErrCount((count) => {
-              if (count >= 1) {
-                if (removeOnError && placeholderRef.current) {
-                  placeholderRef.current.style.display = "none";
-                }
-              } else {
-                if (imageRef.current) imageRef.current.src = imgProps.src ?? "";
+        imgProps.src.includes("https://twitter.com") ? (
+          <a href={imgProps.src} />
+        ) : (
+          <img
+            loading="lazy"
+            ref={imageRef}
+            {...imgProps}
+            style={{
+              ...(imgProps.style ?? {}),
+              ...visuallyHidden,
+            }}
+            alt=""
+            onLoad={(...e) => {
+              const image = e[0].target as HTMLImageElement;
+              if (placeholderRef.current) {
+                placeholderRef.current.style.display = "none";
               }
-              return count + 1;
-            });
-          }}
-          src={
-            original
-              ? externalResourceUri(imgProps.src, { cached: true })
-              : proxyImageUrl(imgProps.src ?? "", size)
-          }
-        />
+              image.style.position = imgProps?.style?.position ?? "inherit";
+              /// @ts-ignore
+              image.style.top = imgProps?.style?.top ?? "inherit";
+              image.style.visibility = "visible";
+            }}
+            onError={(...e) => {
+              setErrCount((count) => {
+                if (count >= 1) {
+                  if (removeOnError && placeholderRef.current) {
+                    placeholderRef.current.style.display = "none";
+                  }
+                } else {
+                  if (imageRef.current)
+                    imageRef.current.src = imgProps.src ?? "";
+                }
+                return count + 1;
+              });
+            }}
+            src={
+              original
+                ? externalResourceUri(imgProps.src, { cached: true })
+                : proxyImageUrl(imgProps.src ?? "", size)
+            }
+          />
+        )
       ) : !noSkeleton ? (
         <Skeleton
           style={{
