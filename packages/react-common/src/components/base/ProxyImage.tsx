@@ -57,8 +57,14 @@ export const ProxyImage = React.memo(function ProxyImage({
       }
     }, 2000);
   }, []);
+  function htmlDecode(input){
+    var doc = new DOMParser().parseFromString(input, "text/html");
+    return doc.documentElement.textContent;
 
-  const [html, setHtml] = useState("");
+  }
+
+
+  const [html, setHtml] = useState<any>();
   imgProps.src && imgProps.src.includes("https://twitter.com") ? 
   useEffect(() => {
     let urlencoded = encodeURIComponent(imgProps.src as string);
@@ -74,8 +80,8 @@ export const ProxyImage = React.memo(function ProxyImage({
         let tweet = p.innerHTML;
         let link = a.getAttribute("href");
         let tweetHtml = `<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%;"><div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%;"><div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%;"><div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%;"><div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%;"><div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%;"><div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%;">${tweet} ${link}</div></div></div></div></div></div></div>`;
-      
-        setHtml(tweetHtml);
+        
+        setHtml(htmlDecode(tweetHtml));
         
       });
   }, []) : null;
@@ -83,7 +89,7 @@ export const ProxyImage = React.memo(function ProxyImage({
     
     <>
       <div>
-      <div dangerouslySetInnerHTML={{ __html: this.htmlDecode(html) }} />
+      <div dangerouslySetInnerHTML={{ __html: (html ) }} />
 
        
       {imgProps.src && !noSkeleton ? (
@@ -156,6 +162,7 @@ export const ProxyImage = React.memo(function ProxyImage({
     </>
   );
 });
+
 
 
 
