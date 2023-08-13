@@ -60,7 +60,10 @@ export const ProxyImage = React.memo(function ProxyImage({
 
   return (
     <>
-      {imgProps.src && !noSkeleton ? (
+    {imgProps.src && imgProps.src.includes("https://twitter.com") ? (
+          <a href={imgProps.src} />
+        ) : (
+      imgProps.src && !noSkeleton ? (
         <Skeleton
           style={{
             height: "100%",
@@ -73,11 +76,8 @@ export const ProxyImage = React.memo(function ProxyImage({
           ref={placeholderRef}
           className={imgProps.className}
         />
-      ) : null}
-      {imgProps.src ? (
-        imgProps.src.includes("https://twitter.com") ? (
-          <a href={imgProps.src} />
-        ) : (
+      ) : null)}
+      {imgProps.src && !imgProps.src.includes("https://twitter.com") ? (
           <img
             loading="lazy"
             ref={imageRef}
@@ -116,7 +116,7 @@ export const ProxyImage = React.memo(function ProxyImage({
                 : proxyImageUrl(imgProps.src ?? "", size)
             }
           />
-        )
+        
       ) : !noSkeleton ? (
         <Skeleton
           style={{
@@ -129,7 +129,8 @@ export const ProxyImage = React.memo(function ProxyImage({
           }}
           className={imgProps.className}
         />
-      ) : null}
+      ) : null} 
     </>
   );
 });
+
