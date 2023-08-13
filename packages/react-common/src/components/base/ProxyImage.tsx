@@ -67,7 +67,7 @@ export const ProxyImage = React.memo(function ProxyImage({
  
 function TweetEmbed({ tweetUrl }) {
   const iframeRef = useRef(null);
-  const tweetId = new URL(tweetUrl).pathname.split("/").pop();
+  const tweetId = new URL(tweetUrl).pathname.split("/").pop()?.split("?")[0]
 
   useEffect(() => {
     // Create an iframe element
@@ -98,7 +98,7 @@ function TweetEmbed({ tweetUrl }) {
       ) : null}
       
        
-      {imgProps.src && !noSkeleton ? (
+      {imgProps.src && ! imgProps.src.includes("twitter.com") && !noSkeleton ? (
         <Skeleton
           style={{
             height: "100%",
