@@ -65,7 +65,6 @@ export const ProxyImage = React.memo(function ProxyImage({
     fetch("https://publish.twitter.com/oembed?url=" + urlencoded + "&omit_script=true")
       .then((res) => res.json())
       .then((json) => {
-//<blockquote class="twitter-tweet"><p lang="en" dir="ltr">How big is a compressed nft</p>&mdash; 🔥🪂staccoverflow ; j&#39;arrête ; 💀 (@STACCoverflow) <a href="https://twitter.com/STACCoverflow/status/1684094486463361025?ref_src=twsrc%5Etfw">July 26, 2023</a></blockquote>
         let html = json.html;
         let parser = new DOMParser();
         let doc = parser.parseFromString(html, "text/html");
@@ -75,8 +74,7 @@ export const ProxyImage = React.memo(function ProxyImage({
         let tweet = p.innerHTML;
         let link = a.getAttribute("href");
         let tweetHtml = `<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%;"><div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%;"><div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%;"><div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%;"><div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%;"><div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%;"><div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%;">${tweet} ${link}</div></div></div></div></div></div></div>`;
-        //: error TS2345: Argument of type 'string' is not assignable to parameter of type 'SetStateAction<{ new (): Element; prototype: Element; }>'.
-        
+      
         setHtml(tweetHtml);
         
       });
@@ -84,8 +82,9 @@ export const ProxyImage = React.memo(function ProxyImage({
   return (
     
     <>
-      
-      {html}
+      <div>
+      <div dangerouslySetInnerHTML={{ __html: this.htmlDecode(html) }} />
+
        
       {imgProps.src && !noSkeleton ? (
         <Skeleton
@@ -153,9 +152,10 @@ export const ProxyImage = React.memo(function ProxyImage({
           }}
           className={imgProps.className}
         />
-      ) : null} 
+      ) : null} </div>
     </>
   );
 });
+
 
 
